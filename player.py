@@ -28,7 +28,7 @@ class Player:
 		while not self.done:
 			data = self.pos_queue.get()
 			self.pos_queue.queue.clear()
-			note = self.pos_to_note_pentatonic(data)
+			note = self.pos_to_note_custom(data)
 			if note:
 				self.note_buffer = self.synth_note(note)
 			else:
@@ -40,14 +40,18 @@ class Player:
 				sd.play(self.note_buffer, SAMPLE_RATE)
 				sd.wait()
 
-	def pos_to_note_pentatonic(self, x):
+	def pos_to_note_custom(self, x, scalename = 'pentatonic'):
 		#Rule for mapping absolute position to a note information
 		min_x = 0
 		max_x = 5
 		base_note = 220 #A0
 		num_octaves = 4
 
-		scale=[0,3,5,7,10]
+		if scalename == 'pentatonic':
+			scale=[0,3,5,7,10]
+		elif scalename == 'blues_6':
+			scale=[0,2,3,4,7,9]
+			
 
 		exp_scale=[]
 		for n in range(num_octaves):
